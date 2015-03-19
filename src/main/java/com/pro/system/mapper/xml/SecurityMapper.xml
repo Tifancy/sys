@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pro.system.mapper.SecurityMapper">
+	
+	
+	 <resultMap id="roleMap" type="com.pro.system.entity.Role" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="created_on" property="createdOn" jdbcType="TIMESTAMP" />
+    <result column="updated_on" property="updatedOn" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="INTEGER" />
+    <result column="updated_by" property="updatedBy" jdbcType="INTEGER" />
+  </resultMap>
+	
+	
+	<resultMap id="resourceMap" type="com.pro.system.entity.Resource" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="permission" property="permission" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="target" property="target" jdbcType="VARCHAR" />
+    <result column="created_on" property="createdOn" jdbcType="TIMESTAMP" />
+    <result column="updated_on" property="updatedOn" jdbcType="TIMESTAMP" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="created_by" property="createdBy" jdbcType="INTEGER" />
+    <result column="updated_by" property="updatedBy" jdbcType="INTEGER" />
+  </resultMap>
+	<select id="findRoleListByUserId" resultMap="roleMap">
+		SELECT r.* 
+			FROM s_user u 
+		INNER JOIN s_user_role ur 
+		ON u.id = ur.user_id 
+		INNER JOIN s_role r 
+		ON ur.role_id = r.id
+	   WHERE u.state =0 
+	 	AND r.state =0 
+	 	AND u.id =#{userId}
+	</select>
+	<select id="findResourceListByRoleId" resultMap="resourceMap">
+		SELECT rs.* FROM s_user u 
+		INNER JOIN s_user_role ur ON u.id = ur.user_id
+		 INNER JOIN s_role r ON ur.role_id = r.id
+		INNER JOIN s_role_resource rr 
+		ON r.id = rr.role_id
+		 INNER JOIN s_resource rs ON rr.resource_id = rs.id
+	WHERE 
+	u.state =0 AND r.state =0 AND rs.state =0 And r.id=#{roleId}
+	</select>
+	
+	<select id="findMenuByModuleIdAndUserId" resultMap="resourceMap">
+	SELECT rs.* FROM s_user u 
+	INNER JOIN s_user_role ur ON u.id = ur.user_id 
+	INNER JOIN s_role r ON ur.role_id = r.id 
+	INNER JOIN s_role_resource rr ON r.id = rr.role_id
+	INNER JOIN s_resource rs ON rr.resource_id = rs.id 
+	WHERE u.state = 0 AND r.state = 0 AND rs.state =0 AND rs.type=1 AND  u.id = #{userId} AND rs.parent_id = #{moduleId}
+	</select>
+	
+	<select id="findModuleListUserId" resultMap="resourceMap">
+	
+	SELECT rs.* FROM s_user u 
+	INNER JOIN s_user_role ur ON u.id = ur.user_id 
+	INNER JOIN s_role r ON ur.role_id = r.id 
+	INNER JOIN s_role_resource rr ON r.id = rr.role_id
+	INNER JOIN s_resource rs ON rr.resource_id = rs.id 
+	WHERE u.state = 0 AND r.state = 0 AND rs.state =0 AND rs.type=1 AND  u.id = #{userId} AND rs.parent_id is NULL
+	</select>
+</mapper>

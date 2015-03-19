@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+<classPathEntry location="C:\Users\guaoyd\.m2\repository\mysql\mysql-connector-java\5.1.34\mysql-connector-java-5.1.34.jar"/>
+  <context id="context1" >
+  
+  <plugin type="com.pro.system.utils.MySQLPaginationPlugin"></plugin>
+    <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"></plugin>  
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+        <property name="searchString" value="Example$" />  
+            <property name="replaceString" value="Criteria" />  
+        </plugin>
+        <plugin  type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />    
+         <commentGenerator>  
+         <!-- 去除自动生成的注释 -->  
+            <property name="suppressAllComments" value="true" />  
+        </commentGenerator>
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/spring" userId="root" password="" />
+    <javaModelGenerator targetPackage="com.pro.system.entity" targetProject="sys" />
+    <sqlMapGenerator targetPackage="com.pro.system.mapper.xml" targetProject="sys" />
+    <javaClientGenerator targetPackage="com.pro.system.mapper" targetProject="sys" type="XMLMAPPER" />
+    <table schema="" tableName="s_user" domainObjectName="User"/>
+    <table schema="" tableName="s_Role" domainObjectName="Role"/>
+    <table schema="" tableName="s_resource" domainObjectName="Resource"/>
+    <table schema="" tableName="s_user_role" domainObjectName="UserRole"/>
+    <table schema="" tableName="s_role_resource" domainObjectName="RoleResource"/>
+  </context>
+</generatorConfiguration>
